@@ -13,7 +13,7 @@ http_list_t *init_http_list()
 {
 	http_list_t *http_list = malloc(sizeof(*http_list)); 
 	http_parsed_t *http_parsed = malloc(sizeof(*http_parsed));
-
+	
 	if(http_list == NULL || http_parsed == NULL)
 		exit(EXIT_FAILURE);
 	
@@ -70,15 +70,14 @@ http_list_t *http_parsers(char *response)
 {
 	http_list_t *http_list = init_http_list();
 	
-	char *tmp = response;
-	int count = 0;
+	char *splited_text = strtok(response, "\r\n");
 
-	while(*tmp) {
-		printf("%s\n", tmp);
-		tmp++;	
+	while(splited_text) {
+		http_parser(http_list, splited_text);
+		splited_text = strtok(NULL, "\r\n");
 	}
-	//http_parser(http_list, response);
-	
+
+	return(http_list);
 }
 
 /*
@@ -98,4 +97,24 @@ void print_all(http_list_t *list)
 		printf("%s:%s\n", actual_element->header, actual_element->value);
 		actual_element = actual_element->next;
 	}
-}	
+}
+
+/*
+////////////////////////////////////////
+	GET VALUE BY HEADER
+///////////////////////////////////////
+*/
+
+http_parsed_t *get(http_list_t *list, char *header)
+{
+	if(list == NULL)
+		exit(EXIT_FAILURE);
+
+	http_parsed_t *actual = list->first;
+
+	while(actual && strcmp(actual->header, header))
+		actual = actual->next;
+	
+	if(actual)
+		return(actual); 
+}
