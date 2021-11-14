@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "../include/http_parser.h"
 
 /*
@@ -50,21 +51,34 @@ http_parsed_t *insert_header_and_value(http_list_t *list, char *header, char *va
 	  HTTP PARSER
 //////////////////////////////////
 */
-
-http_list_t *http_parser(char *response)
+void *http_parser(http_list_t *list, char *header)
 {
+	char *header_name = header;
+
+	char *value_header = strchr(header, ':');
+		
+	*value_header = 0;
+	
+	if(*(++value_header) == ' ')
+		value_header++;
+	
+	insert_header_and_value(list, header_name, value_header);	
+	
+}
+
+http_list_t *http_parsers(char *response)
+{
+	http_list_t *http_list = init_http_list();
+	
 	char *tmp = response;
+	int count = 0;
 
 	while(*tmp) {
-		while(*tmp != '\r' || *tmp != '\n') {
-			tmp++;
-		}
-
-		printf("%s\n", response);
-		tmp++;
+		printf("%s\n", tmp);
+		tmp++;	
 	}
-
-	// In working.......
+	//http_parser(http_list, response);
+	
 }
 
 /*

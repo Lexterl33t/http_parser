@@ -4,9 +4,9 @@
 
 int	main(int argc, char **argv)
 {
-	char *response = "Content-Type:test\r\nOrigin:lol.com";
+	char response[] = "Content-Type:test\r\nOrigin:lol.com";
 	
-	http_list_t *parsed_data = http_parser(response);
+	http_list_t *parsed_data = http_parsers(response);
 	
 	return(0);
 }	
