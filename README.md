@@ -12,7 +12,7 @@ int main(int argc, char **argv)
     
     http_parsed_t *http_response_parsed; // init pointer to element in linked list
     
-    http_list_t *parsed_data = http_parses(response); // parse data
+    http_list_t *parsed_data = http_parsers(response); // parse data
     
     http_response_parsed = get(parsed_data, "Content-Type");
     
